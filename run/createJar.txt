@@ -1,0 +1,16 @@
+#! /bin/bash
+
+cd /home/pi/git/RGPIOServer
+
+echo Compiling java files...
+
+javac  -classpath /home/pi/git/RGPIO/lib/'*' */*.java
+
+echo Creating jar file...
+
+jar cvfe RGPIOServer.jar rgpioserver/RGPIOServer */*.class
+
+echo Jar file in /home/pi/git/RGPIOServer
+echo
+ls -l /home/pi/git/RGPIOServer/RGPIOServer.jar
+echo
