@@ -15,8 +15,9 @@ class SterreborneRun implements MessageListener {
     public void start() {
 
         RGPIO.addMessageListener(this);
-        RGPIO.initialize("/home/pi/RGPIO/");
-
+//        RGPIO.initialize("/home/pi/RGPIO/");
+        RGPIO.initialize("C:\\Users\\erikv\\Documents\\RGPIO\\");
+        
         allDevices = RGPIO.VDevice("allDevices");
         temp = RGPIO.VAnalogInput("temp");
         allDevices.minMembers = 2;
