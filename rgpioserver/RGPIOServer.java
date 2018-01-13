@@ -5,7 +5,8 @@ import rgpio.*;
 class SterreborneRun implements MessageListener {
 
     VDevice allDevices;
-    VAnalogInput temp;
+    VAnalogInput temperature;
+    VAnalogInput humidity;
 
     public void onMessage(MessageEvent e) throws Exception {
         System.out.println(e.toString());
@@ -19,15 +20,18 @@ class SterreborneRun implements MessageListener {
         RGPIO.initialize("C:\\Users\\erikv\\Documents\\RGPIO\\");
         
         allDevices = RGPIO.VDevice("allDevices");
-        temp = RGPIO.VAnalogInput("temp");
+        temperature = RGPIO.VAnalogInput("temperature");
+        humidity = RGPIO.VAnalogInput("humidity");
         allDevices.minMembers = 2;
 
-
+        RGPIO.createRDD();
+        
         while (true) {
             try {
                 Thread.sleep(2000);
-                temp.get();
-                System.out.println("MAIN : temp = "+temp.avg());
+                temperature.get();
+                humidity.get();
+                System.out.println("RGPIOServer : temp = "+temperature.avg()+ " humidity = "+humidity.avg());
             } catch (InterruptedException ie) {
             }
         }
