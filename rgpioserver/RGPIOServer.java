@@ -24,7 +24,7 @@ class SterreborneRun implements MessageListener {
         humidity = RGPIO.VAnalogInput("humidity");
         allDevices.minMembers = 2;
 
-        RGPIO.createRDD();
+        RGPIO.createRRD("C:\\Users\\erikv\\Documents\\RRD\\",30);
         
         while (true) {
             try {
