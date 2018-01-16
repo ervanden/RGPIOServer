@@ -16,22 +16,32 @@ class SterreborneRun implements MessageListener {
     public void start() {
 
         RGPIO.addMessageListener(this);
-//        RGPIO.initialize("/home/pi/RGPIO/");
-        RGPIO.initialize("C:\\Users\\erikv\\Documents\\RGPIO\\");
         
+        String configurationDir=null;
+        String dataStoreDir=null;
+        
+        if (System.getProperty("file.separator").equals("/")) {
+            configurationDir="/home/pi/RGPIO/";
+            dataStoreDir="/home/pi/RGPIO/dataStore/";            
+        } else {
+            configurationDir="C:\\Users\\erikv\\Documents\\RGPIO\\";
+            dataStoreDir="C:\\Users\\erikv\\Documents\\RRD\\";
+        }
+
+        RGPIO.initialize(configurationDir);
         allDevices = RGPIO.VDevice("allDevices");
         temperature = RGPIO.VAnalogInput("temperature");
         humidity = RGPIO.VAnalogInput("humidity");
         allDevices.minMembers = 2;
 
-        RGPIO.createRRD("C:\\Users\\erikv\\Documents\\RRD\\",5);
-        
+        RGPIO.createRRD(dataStoreDir, 5);
+
         while (true) {
             try {
                 Thread.sleep(2000);
                 temperature.get();
                 humidity.get();
-                System.out.println("RGPIOServer : temp = "+temperature.avg()+ " humidity = "+humidity.avg());
+                System.out.println("RGPIOServer : temp = " + temperature.avg() + " humidity = " + humidity.avg());
             } catch (InterruptedException ie) {
             }
         }
