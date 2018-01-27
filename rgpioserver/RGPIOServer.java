@@ -1,5 +1,6 @@
 package rgpioserver;
 
+import java.util.ArrayList;
 import rgpio.*;
 
 class SterreborneRun implements MessageListener {
@@ -35,7 +36,14 @@ class SterreborneRun implements MessageListener {
         allDevices.minMembers = 2;
 
         RGPIO.createRRD(dataStoreDir, 5);
-
+        
+/* simulate webclient request
+                ClientHandler clientHandler = new ClientHandler();
+                ArrayList<String> reply;
+                reply=clientHandler.onClientRequest("", "{\"Command\":\"graph\",\"Arg1\":\"range=1d temperature humidity=pink\"}");
+                for (String s : reply){ System.out.println(s);              
+                }
+*/
         while (true) {
             try {
                 Thread.sleep(2000);
