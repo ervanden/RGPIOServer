@@ -20,6 +20,9 @@ class SterreborneRun implements MessageListener {
         
         String configurationDir=null;
         String dataStoreDir=null;
+
+        // to do : move directory names inside RGPIO : hard coded
+        // no use to make this  visible in the main program
         
         if (System.getProperty("file.separator").equals("/")) {
             configurationDir="/home/pi/RGPIO/";
@@ -44,6 +47,8 @@ class SterreborneRun implements MessageListener {
                 for (String s : reply){ System.out.println(s);              
                 }
 */
+        
+        RGPIO.sendMail("evandenmeersch@sipef.com", "from RGPIOServer", "it's getting hot");
         while (true) {
             try {
                 Thread.sleep(2000);
