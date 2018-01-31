@@ -37,7 +37,7 @@ class SterreborneRun1 implements VInputListener, MessageListener {
     public void start() {
 
         RGPIO.addMessageListener(this);
-        RGPIO.initialize("/home/pi/RGPIO/");
+        RGPIO.initialize();
 
         allDevices = RGPIO.VDevice("allDevices");
         button = RGPIO.VDigitalInput("button");
