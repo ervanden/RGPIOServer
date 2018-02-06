@@ -9,7 +9,9 @@ class SterreborneRun implements MessageListener {
     VAnalogInput hum1, hum2, hum3, hum4;
 
     public void onMessage(MessageEvent e) throws Exception {
-        System.out.println(e.toString());
+        if (e.type!=MessageType.SendMessage) {
+            System.out.println(e.toString());
+        }
 
     }
 
