@@ -7,9 +7,10 @@ class SterreborneRun implements MessageListener {
     VDevice allDevices;
     VAnalogInput tmp1, tmp2, tmp3, tmp4;
     VAnalogInput hum1, hum2, hum3, hum4;
+    VAnalogInput pdu1, pdu2, pdu3, pdu4, pdu5, pdu6, pdu7, pdu8;
 
     public void onMessage(MessageEvent e) throws Exception {
-        if (e.type!=MessageType.SendMessage) {
+        if (e.type != MessageType.SendMessage) {
             System.out.println(e.toString());
         }
 
@@ -21,14 +22,24 @@ class SterreborneRun implements MessageListener {
 
         RGPIO.initialize();
 
-        tmp1 = RGPIO.VAnalogInput("T1");
-        hum1 = RGPIO.VAnalogInput("H1");
-        tmp2 = RGPIO.VAnalogInput("T2");
-        hum2 = RGPIO.VAnalogInput("H2");
-        tmp3 = RGPIO.VAnalogInput("T3");
-        hum3 = RGPIO.VAnalogInput("H3");
-        tmp4 = RGPIO.VAnalogInput("T4");
-        hum4 = RGPIO.VAnalogInput("H4");
+        /* uncomment when these devices are defined in devices.json
+         tmp1 = RGPIO.VAnalogInput("T1");
+         hum1 = RGPIO.VAnalogInput("H1");
+         tmp2 = RGPIO.VAnalogInput("T2");
+         hum2 = RGPIO.VAnalogInput("H2");
+         tmp3 = RGPIO.VAnalogInput("T3");
+         hum3 = RGPIO.VAnalogInput("H3");
+         tmp4 = RGPIO.VAnalogInput("T4");
+         hum4 = RGPIO.VAnalogInput("H4");
+         */
+        pdu1 = RGPIO.VAnalogInput("PDU1");
+        pdu2 = RGPIO.VAnalogInput("PDU1");
+        pdu3 = RGPIO.VAnalogInput("PDU1");
+        pdu4 = RGPIO.VAnalogInput("PDU1");
+        pdu5 = RGPIO.VAnalogInput("PDU1");
+        pdu6 = RGPIO.VAnalogInput("PDU1");
+        pdu7 = RGPIO.VAnalogInput("PDU1");
+        pdu8 = RGPIO.VAnalogInput("PDU1");
 
         RGPIO.createRRD(5);
 
@@ -46,6 +57,7 @@ class SterreborneRun implements MessageListener {
         while (true) {
             try {
                 Thread.sleep(2000);
+/*
                 tmp1.get();
                 tmp2.get();
                 tmp3.get();
@@ -54,7 +66,17 @@ class SterreborneRun implements MessageListener {
                 hum2.get();
                 hum3.get();
                 hum4.get();
-                //            System.out.println("RGPIOServer : temp = " + temperature.avg() + " humidity = " + humidity.avg());
+*/
+                
+pdu1.get();
+pdu2.get();
+pdu3.get();
+pdu4.get();
+pdu5.get();
+pdu6.get();
+pdu7.get();
+pdu8.get();
+
             } catch (InterruptedException ie) {
             }
         }
