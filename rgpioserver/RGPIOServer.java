@@ -33,13 +33,13 @@ class SterreborneRun implements MessageListener {
          hum4 = RGPIO.VAnalogInput("H4");
          */
         pdu1 = RGPIO.VAnalogInput("PDU1");
-        pdu2 = RGPIO.VAnalogInput("PDU1");
-        pdu3 = RGPIO.VAnalogInput("PDU1");
-        pdu4 = RGPIO.VAnalogInput("PDU1");
-        pdu5 = RGPIO.VAnalogInput("PDU1");
-        pdu6 = RGPIO.VAnalogInput("PDU1");
-        pdu7 = RGPIO.VAnalogInput("PDU1");
-        pdu8 = RGPIO.VAnalogInput("PDU1");
+        pdu2 = RGPIO.VAnalogInput("PDU2");
+        pdu3 = RGPIO.VAnalogInput("PDU3");
+        pdu4 = RGPIO.VAnalogInput("PDU4");
+        pdu5 = RGPIO.VAnalogInput("PDU5");
+        pdu6 = RGPIO.VAnalogInput("PDU6");
+        pdu7 = RGPIO.VAnalogInput("PDU7");
+        pdu8 = RGPIO.VAnalogInput("PDU8");
 
         RGPIO.createRRD(5);
 
