@@ -22,16 +22,15 @@ class SterreborneRun implements MessageListener {
 
         RGPIO.initialize();
 
-        /* uncomment when these devices are defined in devices.json
-         tmp1 = RGPIO.VAnalogInput("T1");
-         hum1 = RGPIO.VAnalogInput("H1");
-         tmp2 = RGPIO.VAnalogInput("T2");
-         hum2 = RGPIO.VAnalogInput("H2");
-         tmp3 = RGPIO.VAnalogInput("T3");
-         hum3 = RGPIO.VAnalogInput("H3");
-         tmp4 = RGPIO.VAnalogInput("T4");
-         hum4 = RGPIO.VAnalogInput("H4");
-         */
+        tmp1 = RGPIO.VAnalogInput("T1");
+        hum1 = RGPIO.VAnalogInput("H1");
+        tmp2 = RGPIO.VAnalogInput("T2");
+        hum2 = RGPIO.VAnalogInput("H2");
+        tmp3 = RGPIO.VAnalogInput("T3");
+        hum3 = RGPIO.VAnalogInput("H3");
+        tmp4 = RGPIO.VAnalogInput("T4");
+        hum4 = RGPIO.VAnalogInput("H4");
+
         pdu1 = RGPIO.VAnalogInput("PDU1");
         pdu2 = RGPIO.VAnalogInput("PDU2");
         pdu3 = RGPIO.VAnalogInput("PDU3");
@@ -57,7 +56,7 @@ class SterreborneRun implements MessageListener {
         while (true) {
             try {
                 Thread.sleep(2000);
-/*
+
                 tmp1.get();
                 tmp2.get();
                 tmp3.get();
@@ -66,16 +65,15 @@ class SterreborneRun implements MessageListener {
                 hum2.get();
                 hum3.get();
                 hum4.get();
-*/
-                
-pdu1.get();
-pdu2.get();
-pdu3.get();
-pdu4.get();
-pdu5.get();
-pdu6.get();
-pdu7.get();
-pdu8.get();
+
+                pdu1.get();
+                pdu2.get();
+                pdu3.get();
+                pdu4.get();
+                pdu5.get();
+                pdu6.get();
+                pdu7.get();
+                pdu8.get();
 
             } catch (InterruptedException ie) {
             }
