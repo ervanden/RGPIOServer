@@ -24,6 +24,11 @@ class TolanTigaDC implements MessageListener {
 
         RGPIO.initialize();
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException ie) {
+        }
+
         tmp = new VAnalogInput[nrSensors];
         hum = new VAnalogInput[nrSensors];
         pdu = new VAnalogInput[nrPdus];
@@ -61,6 +66,7 @@ class TolanTigaDC implements MessageListener {
                 }
 
                 for (int i = 0; i < nrSensors; i++) {
+                    System.out.println(" tmp[" + i + "] " + tmp[i]);
                     tmpCurr[i] = tmp[i].avg();
                     if ((tmpCurr[i] > 2500) && (tmpPrev[i] < 2500)) {
                         String msg = "DC temperature warning : T" + (i + 1) + " exceeds 25 degrees";
