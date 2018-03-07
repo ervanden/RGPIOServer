@@ -8,9 +8,9 @@ class TolanTigaDC implements MessageListener {
     VAnalogInput[] hum;
     VAnalogInput[] pdu;
 
-    final static int nrSensors=4;
-    final static int nrPdus=8;
-    
+    final static int nrSensors = 4;
+    final static int nrPdus = 8;
+
     public void onMessage(MessageEvent e) throws Exception {
         if (e.type != MessageType.SendMessage) {
             System.out.println(e.toString());
@@ -35,7 +35,7 @@ class TolanTigaDC implements MessageListener {
         for (int i = 0; i < nrPdus; i++) {
             pdu[i] = RGPIO.VAnalogInput("PDU" + (i + 1));
         }
-        
+
         RGPIO.createRRD(5);
 
         int[] tmpCurr;
@@ -53,22 +53,22 @@ class TolanTigaDC implements MessageListener {
 
                 for (int i = 0; i < nrSensors; i++) {
                     tmp[i].get();
-                                        System.out.println("T"+(i+1)+"  "+tmp[i].avg());
+//                    System.out.println("T" + (i + 1) + "  " + tmp[i].avg());
                     hum[i].get();
-                                                  System.out.println("H"+(i+1)+"  "+tmp[i].avg());
+//                    System.out.println("H" + (i + 1) + "  " + tmp[i].avg());
                 }
                 for (int i = 0; i < nrPdus; i++) {
                     pdu[i].get();
-                                                  System.out.println("PDU"+(i+1)+"  "+pdu[i].avg());
+//                    System.out.println("PDU" + (i + 1) + "  " + pdu[i].avg());
                 }
 
                 for (int i = 0; i < nrSensors; i++) {
                     tmpCurr[i] = tmp[i].avg();
                     if ((tmpCurr[i] > 2500) && (tmpPrev[i] < 2500)) {
                         String msg = "DC temperature warning : T" + (i + 1) + " exceeds 25 degrees";
-                        RGPIO.sendMail("evandenmeersch@sipef.com", msg, "");
+                        RGPIO.sendMail("atanady@sipef.com", msg, "");
                     };
-                    tmpPrev[i]=tmpCurr[i];
+                    tmpPrev[i] = tmpCurr[i];
                 }
 
             } catch (InterruptedException ie) {
