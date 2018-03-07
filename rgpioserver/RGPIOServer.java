@@ -23,12 +23,12 @@ class TolanTigaDC implements MessageListener {
         RGPIO.addMessageListener(this);
 
         RGPIO.initialize();
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException ie) {
-        }
-
+        /*
+         try {
+         Thread.sleep(2000);
+         } catch (InterruptedException ie) {
+         }
+         */
         tmp = new VAnalogInput[nrSensors];
         hum = new VAnalogInput[nrSensors];
         pdu = new VAnalogInput[nrPdus];
@@ -43,10 +43,10 @@ class TolanTigaDC implements MessageListener {
 
         RGPIO.createRRD(5);
 
-        int[] tmpCurr;
-        int[] tmpPrev;
-        tmpCurr = new int[nrSensors];
-        tmpPrev = new int[nrSensors];
+        Integer[] tmpCurr;
+        Integer[] tmpPrev;
+        tmpCurr = new Integer[nrSensors];
+        tmpPrev = new Integer[nrSensors];
 
         for (int i = 0; i < nrSensors; i++) {
             tmpCurr[i] = 0;
@@ -66,13 +66,15 @@ class TolanTigaDC implements MessageListener {
                 }
 
                 for (int i = 0; i < nrSensors; i++) {
-                    System.out.println(" tmp[" + i + "] " + tmp[i]);
+//                    System.out.println(" tmp[" + i + "] " + tmp[i]);
                     tmpCurr[i] = tmp[i].avg();
-                    if ((tmpCurr[i] > 2500) && (tmpPrev[i] < 2500)) {
-                        String msg = "DC temperature warning : T" + (i + 1) + " exceeds 25 degrees";
-                        RGPIO.sendMail("atanady@sipef.com", msg, "");
-                    };
-                    tmpPrev[i] = tmpCurr[i];
+                    if ((tmpCurr[i] != null) && (tmpPrev[i] != null)) {
+                        if ((tmpCurr[i] > 2500) && (tmpPrev[i] < 2500)) {
+                            String msg = "DC temperature warning : T" + (i + 1) + " exceeds 25 degrees";
+                            RGPIO.sendMail("atanady@sipef.com", msg, "");
+                        }
+                        tmpPrev[i] = tmpCurr[i];
+                    }
                 }
 
             } catch (InterruptedException ie) {
