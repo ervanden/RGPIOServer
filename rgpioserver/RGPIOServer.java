@@ -8,6 +8,9 @@ class TolanTigaDC implements MessageListener {
     VAnalogInput[] hum;
     VAnalogInput[] pdu;
 
+    final static int nrSensors=4;
+    final static int nrPdus=8;
+    
     public void onMessage(MessageEvent e) throws Exception {
         if (e.type != MessageType.SendMessage) {
             System.out.println(e.toString());
@@ -21,15 +24,15 @@ class TolanTigaDC implements MessageListener {
 
         RGPIO.initialize();
 
-        tmp = new VAnalogInput[4];
-        hum = new VAnalogInput[4];
-        pdu = new VAnalogInput[8];
+        tmp = new VAnalogInput[nrSensors];
+        hum = new VAnalogInput[nrSensors];
+        pdu = new VAnalogInput[nrPdus];
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < nrSensors; i++) {
             tmp[i] = RGPIO.VAnalogInput("T" + (i + 1));
             hum[i] = RGPIO.VAnalogInput("H" + (i + 1));
         }
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < nrPdus; i++) {
             pdu[i] = RGPIO.VAnalogInput("PDU" + (i + 1));
         }
         
@@ -37,10 +40,10 @@ class TolanTigaDC implements MessageListener {
 
         int[] tmpCurr;
         int[] tmpPrev;
-        tmpCurr = new int[4];
-        tmpPrev = new int[4];
+        tmpCurr = new int[nrSensors];
+        tmpPrev = new int[nrSensors];
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < nrSensors; i++) {
             tmpPrev[i] = 0;
         }
 
@@ -48,22 +51,23 @@ class TolanTigaDC implements MessageListener {
             try {
                 Thread.sleep(2000);
 
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < nrSensors; i++) {
                     tmp[i].get();
                     hum[i].get();
                 }
-                for (int i = 0; i < 8; i++) {
+                for (int i = 0; i < nrPdus; i++) {
                     pdu[i].get();
                 }
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < nrSensors; i++) {
                     System.out.println("T"+(i+1)+"  curr="+tmpCurr[i]+" prev="+tmpPrev[i]);
                 }
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < nrSensors; i++) {
                     tmpCurr[i] = tmp[i].avg();
                     if ((tmpCurr[i] > 2500) && (tmpPrev[i] < 2500)) {
                         String msg = "DC temperature warning : T" + (i + 1) + " exceeds 25 degrees";
                         RGPIO.sendMail("evandenmeersch@sipef.com", msg, "");
-                    }
+                    };
+                    tmpPrev[i]=tmpCurr[i];
                 }
 
             } catch (InterruptedException ie) {
