@@ -53,14 +53,15 @@ class TolanTigaDC implements MessageListener {
 
                 for (int i = 0; i < nrSensors; i++) {
                     tmp[i].get();
+                                        System.out.println("T"+(i+1)+"  "+tmp[i].avg());
                     hum[i].get();
+                                                  System.out.println("H"+(i+1)+"  "+tmp[i].avg());
                 }
                 for (int i = 0; i < nrPdus; i++) {
                     pdu[i].get();
+                                                  System.out.println("PDU"+(i+1)+"  "+tmp[i].avg());
                 }
-                for (int i = 0; i < nrSensors; i++) {
-//                    System.out.println("T"+(i+1)+"  curr="+tmpCurr[i]+" prev="+tmpPrev[i]);
-                }
+
                 for (int i = 0; i < nrSensors; i++) {
                     tmpCurr[i] = tmp[i].avg();
                     if ((tmpCurr[i] > 2500) && (tmpPrev[i] < 2500)) {
