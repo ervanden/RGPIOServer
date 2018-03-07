@@ -2,12 +2,11 @@ package rgpioserver;
 
 import rgpio.*;
 
-class SterreborneRun implements MessageListener {
+class TolanTigaDC implements MessageListener {
 
-    VDevice allDevices;
-    VAnalogInput tmp1, tmp2, tmp3, tmp4;
-    VAnalogInput hum1, hum2, hum3, hum4;
-    VAnalogInput pdu1, pdu2, pdu3, pdu4, pdu5, pdu6, pdu7, pdu8;
+    VAnalogInput[] tmp;
+    VAnalogInput[] hum;
+    VAnalogInput[] pdu;
 
     public void onMessage(MessageEvent e) throws Exception {
         if (e.type != MessageType.SendMessage) {
@@ -22,58 +21,50 @@ class SterreborneRun implements MessageListener {
 
         RGPIO.initialize();
 
-        tmp1 = RGPIO.VAnalogInput("T1");
-        hum1 = RGPIO.VAnalogInput("H1");
-        tmp2 = RGPIO.VAnalogInput("T2");
-        hum2 = RGPIO.VAnalogInput("H2");
-        tmp3 = RGPIO.VAnalogInput("T3");
-        hum3 = RGPIO.VAnalogInput("H3");
-        tmp4 = RGPIO.VAnalogInput("T4");
-        hum4 = RGPIO.VAnalogInput("H4");
+        tmp = new VAnalogInput[4];
+        hum = new VAnalogInput[4];
+        pdu = new VAnalogInput[8];
 
-        pdu1 = RGPIO.VAnalogInput("PDU1");
-        pdu2 = RGPIO.VAnalogInput("PDU2");
-        pdu3 = RGPIO.VAnalogInput("PDU3");
-        pdu4 = RGPIO.VAnalogInput("PDU4");
-        pdu5 = RGPIO.VAnalogInput("PDU5");
-        pdu6 = RGPIO.VAnalogInput("PDU6");
-        pdu7 = RGPIO.VAnalogInput("PDU7");
-        pdu8 = RGPIO.VAnalogInput("PDU8");
-
+        for (int i = 0; i < 4; i++) {
+            tmp[i] = RGPIO.VAnalogInput("T" + (i + 1));
+            hum[i] = RGPIO.VAnalogInput("H" + (i + 1));
+        }
+        for (int i = 0; i < 8; i++) {
+            pdu[i] = RGPIO.VAnalogInput("PDU" + (i + 1));
+        }
+        
         RGPIO.createRRD(5);
 
-        /* simulate webclient request
-         ClientHandler clientHandler = new ClientHandler();
-         ArrayList<String> reply;
-         reply=clientHandler.onClientRequest("", "{\"Command\":\"graph\",\"Arg1\":\"range=1d temperature humidity=pink\"}");
-         for (String s : reply){ System.out.println(s);              
-         }
-         */
-        /* test sending of email
-        
-         RGPIO.sendMail("evandenmeersch@sipef.com", "from mailfile RGPIOServer", "it is getting hot in here");
-         */
+        int[] tmpCurr;
+        int[] tmpPrev;
+        tmpCurr = new int[4];
+        tmpPrev = new int[4];
+
+        for (int i = 0; i < 4; i++) {
+            tmpPrev[i] = 0;
+        }
+
         while (true) {
             try {
                 Thread.sleep(2000);
 
-                tmp1.get();
-                tmp2.get();
-                tmp3.get();
-                tmp4.get();
-                hum1.get();
-                hum2.get();
-                hum3.get();
-                hum4.get();
-
-                pdu1.get();
-                pdu2.get();
-                pdu3.get();
-                pdu4.get();
-                pdu5.get();
-                pdu6.get();
-                pdu7.get();
-                pdu8.get();
+                for (int i = 0; i < 4; i++) {
+                    tmp[i].get();
+                    hum[i].get();
+                }
+                for (int i = 0; i < 8; i++) {
+                    pdu[i].get();
+                }
+                for (int i = 0; i < 4; i++) {
+                    System.out.println("T"+(i+1)+"  curr="+tmpCurr[i]+" prev="+tmpPrev[i]);
+                }
+                for (int i = 0; i < 4; i++) {
+                    tmpCurr[i] = tmp[i].avg();
+                    if ((tmpCurr[i] > 2500) && (tmpPrev[i] < 2500)) {
+                        String msg = "DC temperature warning : T" + (i + 1) + " exceeds 25 degrees";
+                        RGPIO.sendMail("evandenmeersch@sipef.com", msg, "");
+                    }
+                }
 
             } catch (InterruptedException ie) {
             }
@@ -85,6 +76,6 @@ class SterreborneRun implements MessageListener {
 public class RGPIOServer {
 
     public static void main(String[] args) {
-        new SterreborneRun().start();
+        new TolanTigaDC().start();
     }
 }
